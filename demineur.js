@@ -1,3 +1,6 @@
+// @Etienne Beaulé 
+// @Anthony Uyende
+
 load("image.js"); 
 
 var afficherImage = function(colormap , image)
@@ -10,8 +13,8 @@ var afficherImage = function(colormap , image)
     {
         for(var j = 0 ; j< 16 ; j++) // La largeur de notre tableau 
         {
-           	var couleur = selection[i][j]; // On selectionne l'élèment 
-            setPixel(i , j , colormap[couleur]);
+           	var couleur = selection[i][j]; // On selectionne l'élèment du tableau qu'on veut colorier
+            setPixel(j , i , colormap[couleur]); // On le colorie 
             
         }
     }
