@@ -8,13 +8,15 @@ load("image.js");
 
 var afficherImage = function(x,y,colormap,image)
 {
-    setScreenMode(16, 16); // On defini la taille de l'image
-    
     var selection = images[image]; // On choisit l'image qu'on veut afficher
+    var hauteur = selection.length ; // Hauteur du tableau images
+    var largeur = selection[0].length ; // Largeur du tableau images ** j'ai pris 0 comme index
     
-    for(var i = 0 ; i< 16 ; i++) // La hauteur de notre tableau
+    setScreenMode(hauteur, largeur); // On defini la taille de l'image
+    
+    for(var i = 0 ; i<hauteur; i++) // La hauteur de notre tableau
     {
-        for(var j = 0 ; j< 16 ; j++) // La largeur de notre tableau 
+        for(var j = 0 ; j<largeur; j++) // La largeur de notre tableau 
         {
            	var couleur = selection[j][i]; // On colorie la surface ixj
            
