@@ -3,8 +3,7 @@
 
 load("image.js"); 
 
-
-// Fonction afficherImage
+// afficherImage
 
 var afficherImage = function(x,y,colormap,image)
 {
@@ -27,6 +26,19 @@ var afficherImage = function(x,y,colormap,image)
         }
     }
 };
+afficherImage(8,6,colormap , 4);
+
+// attendreClic
+
+
+
+
+
+
+
+
+
+// placerMines
 
 var placerMines = function (largeur, hauteur, nbMines, x, y) {
 	// Create "false" 2D matrix
@@ -52,4 +64,19 @@ var placerMines = function (largeur, hauteur, nbMines, x, y) {
 	return field;
 };
 
-afficherImage(8,6,colormap , 4);
+// demineur
+
+
+
+
+
+
+
+
+// testDemineur
+
+
+
+
+
+
