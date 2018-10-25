@@ -1,4 +1,10 @@
+//@Etienne Beaulé
+//@Anthony Uyende
+
 load("image.js"); 
+
+
+// Fonction afficherImage
 
 var afficherImage = function(x,y,colormap,image)
 {
@@ -10,16 +16,14 @@ var afficherImage = function(x,y,colormap,image)
     {
         for(var j = 0 ; j< 16 ; j++) // La largeur de notre tableau 
         {
-           	var couleur = selection[i][j]; // On selectionne l'élèment 
-            
-            if (i == x && j == y)
+           	var couleur = selection[j][i]; // On colorie la surface ixj
+           
+            if (i == x && j == y)//si on atteinnt le coordonné (x,y)
             {
-            setPixel(x , y , colormap[couleur]); //Afficher l'élément à la position (x,y)
+            setPixel(x , y , colormap[couleur]); //on l'affiche
             }
         }
     }
-    
-    //return selection.length ;
 };
 
-afficherImage(7,14,colormap , 4);
+afficherImage(8,6,colormap , 4);
