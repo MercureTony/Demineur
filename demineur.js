@@ -89,10 +89,11 @@ var placerMines = function (largeur, hauteur, nbMines, x, y) {
  * @param {int} nbMines The number of mines to include
  */
 var demineur = function (largeur, hauteur, nbMines) {
+	var tileSize = 16
 	// Initialize grid
 	setScreenMode(hauteur, largeur);
-	for (var y = 0; y < hauteur; y++) {
-		for (var x = 0; x < largeur; y++) {
+	for (var y = 0; y < hauteur * tileSize; y += tileSize) {
+		for (var x = 0; x < largeur * tileSize; x += tileSize) {
 			// Set hidden tile
 			afficherImage(x, y, colormap, 11);
 		}
