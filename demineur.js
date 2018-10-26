@@ -89,7 +89,7 @@ var placerMines = function (largeur, hauteur, nbMines, x, y) {
  * @param {int} nbMines The number of mines to include
  */
 var demineur = function (largeur, hauteur, nbMines) {
-	var tileSize = 16
+	var tileSize = 16;
 	// Initialize grid
 	setScreenMode(hauteur, largeur);
 	for (var y = 0; y < hauteur * tileSize; y += tileSize) {
