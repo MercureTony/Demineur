@@ -11,28 +11,27 @@ load("image.js");
 /*
  * Displays the specified image at the coordinates
  *
- * @param {int} x The x-coordinate for the image
- * @param {int} y The y-coordinate for the image
+ * @param {int} x The starting x-coordinate for the image
+ * @param {int} y The starting y-coordinate for the image
  * @param {array} colourmap Choice of colour for the image
- * @param {array} image The bitmap of pixels to display
+ * @param {int} image The index for the image to display
  */
 var afficherImage = function (x, y, colourmap, image) {
+	// Fetch bitmap of image
 	var selection = images[image];
+	
+	// Get size of bitmap
 	var hauteur = selection.length;
 	var largeur = selection[0].length;
-
-	setScreenMode(hauteur, largeur);
 	
+	// Colourize area from specified colours in bitmap mapped to colourmap
 	for (var i = 0; i < hauteur; i++) {
 		for (var j = 0 ; j < largeur; j++) {
-			var couleur = selection[j][i]; // On colorie la surface (i, j)
-
-			if (j == x && i == y) setPixel(x, y, colourmap[couleur]);
+			var couleur = selection[j][i];
+			setPixel(j, i, colourmap[couleur]);
 		}
 	}
 };
-
-// afficherImage(8, 6, colormap, 4);
 
 // attendreClic
 
@@ -62,9 +61,9 @@ var placerMines = function (largeur, hauteur, nbMines, x, y) {
 	for (var c = 0; c < largeur; c++) row.push(false); // Create columns of false
 	for (var r = 0; r < hauteur; r++) field.push(row); // Form rows from columns
 
-	// Handle exceptions
-	if (largeur * hauteur >= nbMines) throw Error("Trop de mines");
-	if (field[y][x] == undefined) throw Error("Coordonnées incorrectes");
+	// Throw exceptions if it gets invalid parameters
+	if (largeur * hauteur <= nbMines) throw Error("Trop de mines");
+	if (typeof field[y][x] == 'undefined') throw Error("Coordonnées incorrectes");
 
 	var plantedMines = 0;
 	while (plantedMines != nbMines) {
@@ -81,14 +80,24 @@ var placerMines = function (largeur, hauteur, nbMines, x, y) {
 	return field;
 };
 
-// demineur
-
-
-
-
-
-
-
+/*
+ * Run Minesweeper
+ * Main function
+ *
+ * @param {int} largeur The width of the game grid
+ * @param {int} hauteur The heigt of the game grid
+ * @param {int} nbMines The number of mines to include
+ */
+var demineur = function (largeur, hauteur, nbMines) {
+	// Initialize grid
+	setScreenMode(hauteur, largeur);
+	for (var y = 0; y < hauteur; y++) {
+		for (var x = 0; x < largeur; y++) {
+			// Set hidden tile
+			afficherImage(x, y, colormap, 11);
+		}
+	}
+};
 
 // testDemineur
 
