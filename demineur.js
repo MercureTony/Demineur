@@ -1,32 +1,38 @@
-//@Etienne Beaulé
-//@Anthony Uyende
+/**
+ * Minesweeper for CodeBoot
+ *
+ * @author Etienne Beaulé
+ * @author Anthony Uyende
+ * @date 5 November 2018
+ */
 
 load("image.js"); 
 
-// afficherImage
+/*
+ * Displays the specified image at the coordinates
+ *
+ * @param {int} x The x-coordinate for the image
+ * @param {int} y The y-coordinate for the image
+ * @param {array} colourmap Choice of colour for the image
+ * @param {array} image The bitmap of pixels to display
+ */
+var afficherImage = function (x, y, colourmap, image) {
+	var selection = images[image];
+	var hauteur = selection.length;
+	var largeur = selection[0].length;
 
-var afficherImage = function(x,y,colormap,image)
-{
-    var selection = images[image];
-    var hauteur = selection.length ; // Hauteur du tableau images
-    var largeur = selection[0].length ; // Largeur du tableau images ** j'ai pris 0 comme index
-    
-    setScreenMode(hauteur, largeur);
-    
-    for(var i = 0 ; i<hauteur; i++)
-    {
-        for(var j = 0 ; j<largeur; j++)
-        {
-           	var couleur = selection[j][i]; // On colorie la surface ixj
-           
-            if (i == x && j == y)
-            {
-            setPixel(x , y , colormap[couleur]);
-            }
-        }
-    }
+	setScreenMode(hauteur, largeur);
+	
+	for (var i = 0; i < hauteur; i++) {
+		for (var j = 0 ; j < largeur; j++) {
+			var couleur = selection[j][i]; // On colorie la surface (i, j)
+
+			if (j == x && i == y) setPixel(x, y, colourmap[couleur]);
+		}
+	}
 };
-afficherImage(8,6,colormap , 4);
+
+// afficherImage(8, 6, colormap, 4);
 
 // attendreClic
 
@@ -38,8 +44,17 @@ afficherImage(8,6,colormap , 4);
 
 
 
-// placerMines
-
+/*
+ * Initialize mines
+ * Create 2D matrix with randomly placed "mines"
+ *
+ * @param {int} largeur The y-length of the matrix
+ * @param {int} hauteur The x-length of the matrix
+ * @param {int} nbMines The number of "mines" to place
+ * @param {int} x illegal x-coordinate to place mine
+ * @param {int} y illegal y-coordinate to place mine
+ * @return {array} 2D boolean matrix with nbMines "true"s
+ */
 var placerMines = function (largeur, hauteur, nbMines, x, y) {
 	// Create "false" 2D matrix
 	var field = [];
@@ -53,9 +68,11 @@ var placerMines = function (largeur, hauteur, nbMines, x, y) {
 
 	var plantedMines = 0;
 	while (plantedMines != nbMines) {
+		// Create random coordinate
 		var xCoord = Math.floor(Math.random() * largeur);
 		var yCoord = Math.floor(Math.random() * hauteur);
 
+		// Don't place mine on starting space
 		if (x == xCoord && y == yCoord) continue;
 
 		field[yCoord][xCoord] = true;
