@@ -18,7 +18,7 @@ var tileSize = 16; // Size of component square tiles
  * @param {array} colourmap Choice of colour for the image
  * @param {int} image The index for the image to display
  */
-var afficherImage = function (x, y, colourmap, image) {
+var afficherImage = function (x, y, colormap, image) {
 	// Fetch bitmap of image
 	var selection = images[image];
 	
@@ -29,7 +29,7 @@ var afficherImage = function (x, y, colourmap, image) {
 	// Colourize area from specified colours in bitmap mapped to colourmap
 	for (var i = 0; i < hauteur; i++) {
 		for (var j = 0 ; j < largeur; j++) {
-			var couleur = selection[j][i];
+			var couleur = selection[i][j];
 			setPixel(j + x, i + y, colourmap[couleur]);
 		}
 	}
