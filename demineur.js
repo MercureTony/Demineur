@@ -35,15 +35,26 @@ var afficherImage = function (x, y, colormap, image) {
 	}
 };
 
-// attendreClic
+/*
+ * Detect the activity of the mouse
+ * Use getMouse() to determine the activity
+ *
+ * @param {int} x-coordinate
+ * @param {int} y coordinate
+ */
 
+var attendreClic = function(){
+    var x;
+    var y;
+        while(getMouse().down == false){
+            x = getMouse().x;
+            y = getMouse().y;
+            pause(0.01) ;
+        }
+   return "x-axis :"+x+", y-axis :"+y;
+};
 
-
-
-
-
-
-
+attendreClic();
 
 /*
  * Initialize mines
