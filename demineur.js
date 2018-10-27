@@ -54,8 +54,6 @@ var attendreClic = function(){
    return "x-axis :"+x+", y-axis :"+y;
 };
 
-attendreClic();
-
 /*
  * Initialize mines
  * Create 2D matrix with randomly placed "mines"
