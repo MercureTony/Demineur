@@ -44,13 +44,13 @@ var afficherImage = function (x, y, colormap, image) {
  */
 
 var attendreClic = function(){
-    var x;
-    var y;
-        while(getMouse().down == false){
-            x = getMouse().x;
-            y = getMouse().y;
-            pause(0.01) ;
-        }
+   var x;
+   var y;
+      while(getMouse().down == false){
+          x = getMouse().x;
+          y = getMouse().y;
+          pause(0.01) ;
+      }
    return "x-axis :"+x+", y-axis :"+y;
 };
 
