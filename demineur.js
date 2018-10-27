@@ -30,7 +30,7 @@ var afficherImage = function (x, y, colourmap, image) {
 	for (var i = 0; i < hauteur; i++) {
 		for (var j = 0 ; j < largeur; j++) {
 			var couleur = selection[j][i];
-			setPixel(j, i, colourmap[couleur]);
+			setPixel(j + x, i + y, colourmap[couleur]);
 		}
 	}
 };
