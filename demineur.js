@@ -8,6 +8,8 @@
 
 load("image.js"); 
 
+var tileSize = 16; // Size of component square tiles
+
 /*
  * Displays the specified image at the coordinates
  *
@@ -89,15 +91,20 @@ var placerMines = function (largeur, hauteur, nbMines, x, y) {
  * @param {int} nbMines The number of mines to include
  */
 var demineur = function (largeur, hauteur, nbMines) {
-	var tileSize = 16;
 	// Initialize grid
-	setScreenMode(hauteur, largeur);
+	setScreenMode(hauteur * tileSize, largeur * tileSize);
+	
+	// Tile-by-tile (so leaps by tile size)
 	for (var y = 0; y < hauteur * tileSize; y += tileSize) {
 		for (var x = 0; x < largeur * tileSize; x += tileSize) {
-			// Set hidden tile
+			// Set hidden tile - Hidden: 11
 			afficherImage(x, y, colormap, 11);
 		}
 	}
+	
+	// Wait for first click to initialize mines
+	
+	// Loop for clicking on tile
 };
 
 // testDemineur
