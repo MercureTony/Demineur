@@ -47,7 +47,7 @@ var attendreClic = function(){
    // x-coordinate
    var y;
    // y-coordinate
-   var point = {x:"unkown" , y:"unkown"} ; ;
+   var point = {x:null , y:null} ; ;
    // couple (x,y) with trivial coordinate
       while(getMouse().down == false){
 	//while the mouse's button isn't clicked
