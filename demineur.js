@@ -45,14 +45,21 @@ var afficherImage = function (x, y, colormap, image) {
 
 var attendreClic = function(){
    var x;
+   // x-coordinate
    var y;
+   // y-coordinate
       while(getMouse().down == false){
+	//while the mouse's button isn't clicked
           x = getMouse().x;
+	      // we take the current x position
           y = getMouse().y;
+	      // we take the current y position
           pause(0.01) ;
       }
    return "x-axis :"+x+", y-axis :"+y;
+          //we print the result
 };
+
 
 /*
  * Initialize mines
