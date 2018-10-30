@@ -30,7 +30,7 @@ var afficherImage = function (x, y, colormap, image) {
 	for (var i = 0; i < hauteur; i++) {
 		for (var j = 0 ; j < largeur; j++) {
 			var couleur = selection[i][j];
-			setPixel(j + x, i + y, colourmap[couleur]);
+			setPixel(j + x, i + y, colormap[couleur]);
 		}
 	}
 };
@@ -51,10 +51,10 @@ var attendreClic = function(){
    // couple (x,y) with trivial coordinate
       while(getMouse().down == false){
 	//while the mouse's button isn't clicked
-          x = getMouse().x;
-	      // we take the current x position
-          y = getMouse().y;
-	      // we take the current y position
+           x = Math.floor(getMouse().x/16);
+	    // we take the current x position at a 1/16 scale
+          y = Math.floor(getMouse().y/16);
+	    // we take the current y position at a 1/16 scale
           pause(0.01) ;
       }
    point.x = x;
