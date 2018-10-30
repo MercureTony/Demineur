@@ -48,6 +48,8 @@ var attendreClic = function(){
    // x-coordinate
    var y;
    // y-coordinate
+   var point = {x:0 , y:0} ;
+   // couple (x,y) with trivial coordinate
       while(getMouse().down == false){
 	//while the mouse's button isn't clicked
           x = getMouse().x;
@@ -56,8 +58,12 @@ var attendreClic = function(){
 	      // we take the current y position
           pause(0.01) ;
       }
-   return "x-axis :"+x+", y-axis :"+y;
-          //we print the result
+   point.x = x;
+   //we assign new value to x
+   point.y = y;
+   //we assign new value to y
+    
+   return point;
 };
 
 
