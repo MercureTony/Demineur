@@ -36,8 +36,7 @@ var afficherImage = function (x, y, colormap, image) {
 };
 
 /*
- * Detect the activity of the mouse
- * Use getMouse() to determine the activity
+ * Detect when the mouse is press-up
  *
  * @param {int} x-coordinate
  * @param {int} y coordinate
@@ -48,7 +47,7 @@ var attendreClic = function(){
    // x-coordinate
    var y;
    // y-coordinate
-   var point = {x:0 , y:0} ;
+   var point = {x:"unkown" , y:"unkown"} ; ;
    // couple (x,y) with trivial coordinate
       while(getMouse().down == false){
 	//while the mouse's button isn't clicked
