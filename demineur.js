@@ -76,7 +76,7 @@ var placerMines = function (largeur, hauteur, nbMines, x, y) {
 
 	var plantedMines = 0;
 	var xCoord = 0, yCoord = 0;
-	while (plantedMines < nbMines) {
+	while (plantedMines != nbMines) {
 		// Create random coordinate
 		xCoord = Math.floor(Math.random() * largeur);
 		yCoord = Math.floor(Math.random() * hauteur);
@@ -91,48 +91,26 @@ var placerMines = function (largeur, hauteur, nbMines, x, y) {
 };
 
 /*
- * Convert mine field to an integer field
- * Allows for easier calculations when clicking on a tile
+ * Checks neighbours for mines
  *
- * Required due to asinine specifications requiring boolean matrix
- *
- * @param {array} 2D boolean matrix with mines = true
- * @return {array} 2D integer matrix where ints equivalent to index of image
- *                 to show once revealed
+ * @param {int} x x-coordinates for examined tile
+ * @param {int} y y-coordinates for examined tile
+ * @param {array} field Minefield to test
+ * @return {int} number of mines next to
  */
-var numeriserChamp = function (mineField) {
-	var intField = mineField.slice(); // Initialize new matrix of same size
+var checkTile = function (x, y, field) {
+	var num = 0;
+	for (var i = y - 1; i <= y + 1; i++) {
+		if (i < 0) continue;
+		if (i >= field.length) break;
 
-	// First pass; map true booleans to Infinity - should use forEach/map
-	for (var y = 0; y < mineField.length; y++) {
-		for (var x = 0; x < mineField[0].length; x++ ) {
-			// Prevent changes to mines by setting to Infinity
-			if (mineField[y][x]) intField[y][x] = Infinity;
-			else intField[y][x] = 0;
+		for (var j = x - 1; j <= x + 1; j++) {
+			if (j < 0) continue;
+			if (j >= field[0].length) break;
+			if (field[i][j]) num++;
 		}
 	}
-
-	// Second pass; increment neighbouring cells of mine(s)
-	for (var y2 = 0; y2 < intField.length; y2++) {
-		for (var x2 = 0; x2 < intField[0].length; x2++) {
-
-			if (intField[y2][x2] == Infinity) { // Mine
-				// Increment neighbours (3x3 matrix or corners) by 1
-				for (var my = y2 - 1;
-					0 <= my && my <= y2 + 1 && my < mineField.length;
-					my++) {
-					for (var mx = x2 - 1;
-						0 <= mx && mx <= x2 + 1 && mx < mineField[0].length;
-						mx++) {
-						intField[my][mx]++;
-					}
-				}
-			}
-		}
-	}
-
-	// Mines can remain Infinity - special handling
-	return intField;
+	return num;
 };
 
 /*
@@ -158,16 +136,14 @@ var demineur = function (largeur, hauteur, nbMines) {
 	
 	// Wait for first click to initialize mines
 	var click = attendreClic();
-	var mineField = numeriserChamp(
-		placerMines(largeur, hauteur, nbMines, click.x, click.y)
-	);
+	var mineField = placerMines(largeur, hauteur, nbMines, click.x, click.y);
 
 	// Show clicked tile
 	afficherImage(
 		click.x * tileSize, click.y * tileSize,
-		colormap, mineField[click.y][click.x]
+		colormap, checkTile(click.x, click.y, mineField)
 	);
-	mineField[click.y][click.x] = -1; // Clicked
+	mineField[click.y][click.x] = null; // Clicked
 
 	// Tile died on - keeps tile red (set to good tile; no effect)
 	var deadTile = [click.x, click.y];
@@ -176,7 +152,7 @@ var demineur = function (largeur, hauteur, nbMines) {
 	while (goodTiles > 0) {
 		click = attendreClic();
 
-		if (mineField[click.x][click.y] == Infinity) {
+		if (mineField[click.x][click.y]) {
 			// Tile with mine - Lose game
 			afficherImage(
 				click.x * tileSize, click.y * tileSize,
@@ -188,13 +164,19 @@ var demineur = function (largeur, hauteur, nbMines) {
 		} else {
 			// Show adjacent tiles (if not mines)
 			for (var y = click.y - 1; y <= click.y + 1; y++) {
+				if (y < 0) continue;
+				if (y >= mineField.length) break;
+
 				for (var x = click.x - 1; x <= click.x + 1; x++) {
-					if (mineField[y][x] != Infinity && mineField[y][x] != -1) {
+					if (x < 0) continue;
+					if (x >= mineField[0].length) break;
+
+					if (!mineField[y][x] && mineField[y][x] !== null) {
 						afficherImage(
 							x * tileSize, y * tileSize,
-							colormap, mineField[y][x]
+							colormap, checkTile(x, y, mineField)
 						);
-						mineField[y][x] = -1;
+						mineField[y][x] = null;
 						goodTiles--;
 					}
 				}
@@ -210,7 +192,7 @@ var demineur = function (largeur, hauteur, nbMines) {
 		for (var mx = 0; mx < mineField[0].length; mx++) {
 			killed = deadTile[0] == mx && deadTile[1] == my;
 
-			if (mineField[my][mx] == Infinity && !killed) {
+			if (mineField[my][mx] && !killed) {
 				afficherImage(mx * tileSize, my * tileSize, colormap, 9);
 			}
 		}
