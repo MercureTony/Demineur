@@ -82,10 +82,10 @@ var placerMines = function (largeur, hauteur, nbMines, x, y) {
 		yCoord = Math.floor(Math.random() * hauteur);
 
 		// Don't place mine on starting space
-		if (x == xCoord && y == yCoord) continue;
-
-		matrix[yCoord][xCoord] = true;
-		plantedMines++;
+		if (x != xCoord && y != yCoord) {
+			matrix[yCoord][xCoord] = true;
+			plantedMines++;
+		}
 	}
 	return matrix;
 };
