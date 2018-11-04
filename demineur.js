@@ -6,7 +6,7 @@
  * @date 5 November 2018
  */
 
-load("image.js"); 
+load("images.js"); 
 
 var tileSize = 16; // Size of component square tiles
 
@@ -38,33 +38,20 @@ var afficherImage = function (x, y, colormap, image) {
 /*
  * Detect when the mouse is press-up
  *
- * @param {int} x-coordinate
- * @param {int} y coordinate
+ * @return {Dict} Coordinates of pressed tile
  */
+var attendreClic = function() {
+	var point = {x: null, y: null};
 
-var attendreClic = function(){
-   var x;
-   // x-coordinate
-   var y;
-   // y-coordinate
-   var point = {x:null , y:null} ; ;
-   // couple (x,y) with trivial coordinate
-      while(getMouse().down == false){
-	//while the mouse's button isn't clicked
-           x = Math.floor(getMouse().x/tileSize);
-	    // we take the current x position 
-          y = Math.floor(getMouse().y/tileSize);
-	    // we take the current y position 
-          pause(0.01) ;
-      }
-   point.x = x;
-   //we assign new value to x
-   point.y = y;
-   //we assign new value to y
-    
-   return point;
+	while (!getMouse().down) {
+		// Divide by tile size to get specific tile
+		point.x = Math.floor(getMouse().x / tileSize);
+		point.y = Math.floor(getMouse().y / tileSize);
+
+		pause(0.01); // Pause to avoid excessive checking
+	}
+	return point;
 };
-
 
 /*
  * Initialize mines
