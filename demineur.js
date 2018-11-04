@@ -41,16 +41,15 @@ var afficherImage = function (x, y, colormap, image) {
  * @return {Dict} Coordinates of pressed tile
  */
 var attendreClic = function() {
-	var point = {x: null, y: null};
-
 	while (!getMouse().down) {
-		// Divide by tile size to get specific tile
-		point.x = Math.floor(getMouse().x / tileSize);
-		point.y = Math.floor(getMouse().y / tileSize);
-
 		pause(0.01); // Pause to avoid excessive checking
 	}
-	return point;
+
+	// Divide by tile size to get specific tile
+	return {
+		x: Math.floor(getMouse().x / tileSize),
+		y: Math.floor(getMouse().y / tileSize)
+	};
 };
 
 /*
@@ -66,28 +65,74 @@ var attendreClic = function() {
  */
 var placerMines = function (largeur, hauteur, nbMines, x, y) {
 	// Create "false" 2D matrix
-	var field = [];
+	var matrix = [];
 	var row = [];
-	for (var c = 0; c < largeur; c++) row.push(false); // Create columns of false
-	for (var r = 0; r < hauteur; r++) field.push(row); // Form rows from columns
+	for (var c = 0; c < largeur; c++) row.push(false); // Create false columns
+	for (var r = 0; r < hauteur; r++) matrix.push(row.slice()); // Form rows
 
-	// Throw exceptions if it gets invalid parameters
-	if (largeur * hauteur <= nbMines) throw Error("Trop de mines");
-	if (typeof field[y][x] == 'undefined') throw Error("Coordonnées incorrectes");
+	// Throw returns if it gets invalid parameters
+	if (largeur * hauteur <= nbMines) return;
+	if (typeof matrix[y][x] == 'undefined') return;
 
 	var plantedMines = 0;
-	while (plantedMines != nbMines) {
+	var xCoord = 0, yCoord = 0;
+	while (plantedMines < nbMines) {
 		// Create random coordinate
-		var xCoord = Math.floor(Math.random() * largeur);
-		var yCoord = Math.floor(Math.random() * hauteur);
+		xCoord = Math.floor(Math.random() * largeur);
+		yCoord = Math.floor(Math.random() * hauteur);
 
 		// Don't place mine on starting space
 		if (x == xCoord && y == yCoord) continue;
 
-		field[yCoord][xCoord] = true;
+		matrix[yCoord][xCoord] = true;
 		plantedMines++;
 	}
-	return field;
+	return matrix;
+};
+
+/*
+ * Convert mine field to an integer field
+ * Allows for easier calculations when clicking on a tile
+ *
+ * Required due to asinine specifications requiring boolean matrix
+ *
+ * @param {array} 2D boolean matrix with mines = true
+ * @return {array} 2D integer matrix where ints equivalent to index of image
+ *                 to show once revealed
+ */
+var numeriserChamp = function (mineField) {
+	var intField = mineField.slice(); // Initialize new matrix of same size
+
+	// First pass; map true booleans to Infinity - should use forEach/map
+	for (var y = 0; y < mineField.length; y++) {
+		for (var x = 0; x < mineField[0].length; x++ ) {
+			// Prevent changes to mines by setting to Infinity
+			if (mineField[y][x]) intField[y][x] = Infinity;
+			else intField[y][x] = 0;
+		}
+	}
+
+	// Second pass; increment neighbouring cells of mine(s)
+	for (var y2 = 0; y2 < intField.length; y2++) {
+		for (var x2 = 0; x2 < intField[0].length; x2++) {
+
+			if (intField[y2][x2] == Infinity) { // Mine
+				// Increment neighbours (3x3 matrix or corners) by 1
+				for (var my = y2 - 1;
+					0 <= my && my <= y2 + 1 && my < mineField.length;
+					my++) {
+					for (var mx = x2 - 1;
+						0 <= mx && mx <= x2 + 1 && mx < mineField[0].length;
+						mx++) {
+						intField[my][mx]++;
+					}
+				}
+			}
+		}
+	}
+
+	// Mines can remain Infinity - special handling
+	return intField;
 };
 
 /*
@@ -101,18 +146,75 @@ var placerMines = function (largeur, hauteur, nbMines, x, y) {
 var demineur = function (largeur, hauteur, nbMines) {
 	// Initialize grid
 	setScreenMode(hauteur * tileSize, largeur * tileSize);
+	var goodTiles = largeur * hauteur - nbMines - 1;
 	
 	// Tile-by-tile (so leaps by tile size)
-	for (var y = 0; y < hauteur * tileSize; y += tileSize) {
-		for (var x = 0; x < largeur * tileSize; x += tileSize) {
+	for (var i = 0; i < hauteur * tileSize; i += tileSize) {
+		for (var j = 0; j < largeur * tileSize; j += tileSize) {
 			// Set hidden tile - Hidden: 11
-			afficherImage(x, y, colormap, 11);
+			afficherImage(j, i, colormap, 11);
 		}
 	}
 	
 	// Wait for first click to initialize mines
-	
-	// Loop for clicking on tile
+	var click = attendreClic();
+	var mineField = numeriserChamp(
+		placerMines(largeur, hauteur, nbMines, click.x, click.y)
+	);
+
+	// Show clicked tile
+	afficherImage(
+		click.x * tileSize, click.y * tileSize,
+		colormap, mineField[click.y][click.x]
+	);
+	mineField[click.y][click.x] = -1; // Clicked
+
+	// Tile died on - keeps tile red (set to good tile; no effect)
+	var deadTile = [click.x, click.y];
+
+	// Loop for clicking on tile, until all non-mines are shown
+	while (goodTiles > 0) {
+		click = attendreClic();
+
+		if (mineField[click.x][click.y] == Infinity) {
+			// Tile with mine - Lose game
+			afficherImage(
+				click.x * tileSize, click.y * tileSize,
+				colormap, 10
+			);
+
+			deadTile = [click.x, click.y];
+			break;
+		} else {
+			// Show adjacent tiles (if not mines)
+			for (var y = click.y - 1; y <= click.y + 1; y++) {
+				for (var x = click.x - 1; x <= click.x + 1; x++) {
+					if (mineField[y][x] != Infinity && mineField[y][x] != -1) {
+						afficherImage(
+							x * tileSize, y * tileSize,
+							colormap, mineField[y][x]
+						);
+						mineField[y][x] = -1;
+						goodTiles--;
+					}
+				}
+			}
+		}
+	}
+
+	// If killed on examined tile
+	var killed = false;
+
+	// Show mines
+	for (var my = 0; my < mineField.length; my++) {
+		for (var mx = 0; mx < mineField[0].length; mx++) {
+			killed = deadTile[0] == mx && deadTile[1] == my;
+
+			if (mineField[my][mx] == Infinity && !killed) {
+				afficherImage(mx * tileSize, my * tileSize, colormap, 9);
+			}
+		}
+	}
 };
 
 // testDemineur
