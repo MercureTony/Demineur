@@ -146,13 +146,13 @@ var demineur = function (largeur, hauteur, nbMines) {
 	mineField[click.y][click.x] = null; // Clicked
 
 	// Tile died on - keeps tile red (set to good tile; no effect)
-	var deadTile = [click.x, click.y];
+	var deadTile = [-1, -1];
 
 	// Loop for clicking on tile, until all non-mines are shown
 	while (goodTiles > 0) {
 		click = attendreClic();
 
-		if (mineField[click.x][click.y]) {
+		if (mineField[click.y][click.x]) {
 			// Tile with mine - Lose game
 			afficherImage(
 				click.x * tileSize, click.y * tileSize,
@@ -197,6 +197,10 @@ var demineur = function (largeur, hauteur, nbMines) {
 			}
 		}
 	}
+
+	// Check if win/loss - impossible to have neg number if lost
+	if (deadTile[0] + deadTile[1] == -2) alert("Victoire");
+	else alert("Échec");
 };
 
 // testDemineur
