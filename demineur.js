@@ -51,10 +51,10 @@ var attendreClic = function(){
    // couple (x,y) with trivial coordinate
       while(getMouse().down == false){
 	//while the mouse's button isn't clicked
-           x = Math.floor(getMouse().x/16);
-	    // we take the current x position at a 1/16 scale
-          y = Math.floor(getMouse().y/16);
-	    // we take the current y position at a 1/16 scale
+           x = Math.floor(getMouse().x/tileSize);
+	    // we take the current x position 
+          y = Math.floor(getMouse().y/tileSize);
+	    // we take the current y position 
           pause(0.01) ;
       }
    point.x = x;
