@@ -203,7 +203,11 @@ var demineur = function (largeur, hauteur, nbMines) {
 	else alert("Échec");
 };
 
-// testDemineur
+var testDemineur = function () {
+	
+	//to be continued ..
+
+}
 
 
 
