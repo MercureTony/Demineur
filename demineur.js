@@ -213,9 +213,7 @@ var testCountTrue = function (matrix) {
 	var count = 0;
 	for (var y = 0; y < matrix.length; y++) {
 		for (var x = 0; x < matrix[0].length; x++) {
-			if (matrix[y][x]) {
-				count++;
-			}
+			count += matrix[y][x]
 		}
 	}
 	return count;
@@ -253,16 +251,21 @@ var testDemineur = function () {
 	assert(testCountTrue(mineField) == nbMines);
 
 	 
-	//Comparaison between differents images
-        for(var i = 0 ; i<= 11 ; i++){
-	//Choose a random number 
-        var x = Math.floor(10*Math.random() + 1);
-        var comparant = [Math.floor(10*Math.random() + 1),Math.floor(10*Math.random() + 1)];
-        //Give hexadecimal value of the screen
-        var test = exportScreen(afficherImage(comparant[0],comparant[1],colormap,i));
-	//check whether every image are unique or not equal to another image
-        if(x!=i){
-        assert(test != exportScreen(afficherImage(0,0,colormap,x)));    
-       }
-}
+	// Comparaison between differents images
+	for (var i = 0; i <= 11; i++) {
+		// Choose a random number 
+		var x = Math.floor(10*Math.random() + 1);
+		var comparant = [Math.floor(10*Math.random() + 1),
+			Math.floor(10*Math.random() + 1)];
+
+		// Give hexadecimal value of the screen
+		var test = exportScreen(afficherImage(
+			comparant[0], comparant[1], colormap, i
+		));
+
+		// Check uniqueness to another image
+		if (x != i) {
+			assert(test != exportScreen(afficherImage(0,0,colormap,x)));    
+		}
+	}
 };
