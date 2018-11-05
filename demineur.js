@@ -234,10 +234,22 @@ var testDemineur = function () {
 
 	// Count correct number of mines
 	assert(testCountTrue(mineField) == nbMines);
+	
+	// Test n^2-1 mines
+	size = [3, 3];
+	nbMines = size[0] * size[1] - 1;
+	openingCoords = [0, 0];
+	mineField = placerMines(size[0], size[1], nbMines,
+		openingCoords[0], openingCoords[1]);
+	assert(mineField == "false,true,true,true,true,true,true,true,true")
+	
+	// Test minimal field
+	mineField = placerMines(1, 2, 1, 0, 0);
+	assert(mineField == "false,true");
 
 	/* Check bad conditions */
 
-	// Too many miness
+	// Too many mines
 	nbMines = size[0] * size[1];
 	mineField = placerMines(size[0], size[1], nbMines,
 		openingCoords[0], openingCoords[1]);
@@ -265,7 +277,9 @@ var testDemineur = function () {
 
 		// Check uniqueness to another image
 		if (x != i) {
-			assert(test != exportScreen(afficherImage(0,0,colormap,x)));    
+			assert(test != exportScreen(
+				afficherImage(0, 0, colormap, x)
+			));    
 		}
 	}
 };
