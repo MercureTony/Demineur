@@ -252,5 +252,20 @@ var testDemineur = function () {
 		openingCoords[0], openingCoords[1]);
 	assert(testCountTrue(mineField) == nbMines);
 
-	// Plus...
+	 
+	//If arrays are correct    
+	assert( [1,2,3,4] == "1,2,3,4");
+	assert( [ [1,2,3] , [4,5,6] ] == "1,2,3,4,5,6");
+
+	//Comparaison between differents images
+	setScreenMode(20,20);
+
+        for(var i = 0 ; i<= 11 ; i++){
+        
+        var x = Math.floor(10*Math.random() + 1);
+        
+        (x == i) ? x 
+	: assert(exportScreen(afficherImage(0,0,colormap,i)) != exportScreen(afficherImage(0,0,colormap,x)));   
+	
+    }
 };
