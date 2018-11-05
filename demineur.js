@@ -72,7 +72,6 @@ var placerMines = function (largeur, hauteur, nbMines, x, y) {
 
 	// Throw returns if it gets invalid parameters
 	if (largeur * hauteur <= nbMines) return;
-	if (typeof matrix[y][x] == 'undefined') return;
 
 	var plantedMines = 0;
 	var xCoord = 0, yCoord = 0;
@@ -203,14 +202,55 @@ var demineur = function (largeur, hauteur, nbMines) {
 	else alert("Échec");
 };
 
+/*
+ * Function for tests
+ * Counts number of trues
+ *
+ * @param {array} matrix 2D matrix to count from
+ * @return {int} number of true values
+ */
+var testCountTrue = function (matrix) {
+	var count = 0;
+	for (var y = 0; y < matrix.length; y++) {
+		for (var x = 0; x < matrix[0].length; x++) {
+			if (matrix[y][x]) {
+				count++;
+			}
+		}
+	}
+	return count;
+};
+
 var testDemineur = function () {
-	
-	//to be continued ..
+	// Test mine not on specified cell
+	var openingCoords = [2, 3];
+	var size = [5, 7];
+	var nbMines = 12;
+	var mineField = placerMines(size[0], size[1], nbMines,
+		openingCoords[0], openingCoords[1]);
+	assert(!mineField[openingCoords[1]][openingCoords[0]]);
 
-}
+	// Test correct size of matrix
+	assert(mineField.length == size[1]); // y
+	assert(mineField[0].length == size[0]); // x
 
+	// Count correct number of mines
+	assert(testCountTrue(mineField) == nbMines);
 
+	/* Check bad conditions */
 
+	// Too many miness
+	nbMines = size[0] * size[1];
+	mineField = placerMines(size[0], size[1], nbMines,
+		openingCoords[0], openingCoords[1]);
+	assert(mineField === undefined);
 
+	// Starting coordinate is outside of field
+	openingCoords = [size[0] + 1, size[1] + 1];
+	nbMines = 12;
+	mineField = placerMines(size[0], size[1], nbMines,
+		openingCoords[0], openingCoords[1]);
+	assert(testCountTrue(mineField) == nbMines);
 
-
+	// Plus...
+};
