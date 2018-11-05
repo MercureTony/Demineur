@@ -253,19 +253,16 @@ var testDemineur = function () {
 	assert(testCountTrue(mineField) == nbMines);
 
 	 
-	//If arrays are correct    
-	assert( [1,2,3,4] == "1,2,3,4");
-	assert( [ [1,2,3] , [4,5,6] ] == "1,2,3,4,5,6");
-
 	//Comparaison between differents images
-	setScreenMode(20,20);
-
         for(var i = 0 ; i<= 11 ; i++){
-        
+	//Choose a random number 
         var x = Math.floor(10*Math.random() + 1);
-        
-        (x == i) ? x 
-	: assert(exportScreen(afficherImage(0,0,colormap,i)) != exportScreen(afficherImage(0,0,colormap,x)));   
-	
-    }
+        var comparant = [Math.floor(10*Math.random() + 1),Math.floor(10*Math.random() + 1)];
+        //Give hexadecimal value of the screen
+        var test = exportScreen(afficherImage(comparant[0],comparant[1],colormap,i));
+	//check whether every image are unique or not equal to another image
+        if(x!=i){
+        assert(test != exportScreen(afficherImage(0,0,colormap,x)));    
+       }
+}
 };
