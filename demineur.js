@@ -122,7 +122,7 @@ var checkTile = function (x, y, field) {
  */
 var demineur = function (largeur, hauteur, nbMines) {
 	// Initialize grid
-	setScreenMode(hauteur * tileSize, largeur * tileSize);
+	setScreenMode(largeur * tileSize, hauteur * tileSize);
 	var goodTiles = largeur * hauteur - nbMines - 1;
 	
 	// Tile-by-tile (so leaps by tile size)
