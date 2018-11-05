@@ -71,7 +71,7 @@ var placerMines = function (largeur, hauteur, nbMines, x, y) {
 	for (var r = 0; r < hauteur; r++) matrix.push(row.slice()); // Form rows
 
 	// Throw returns if it gets invalid parameters
-	if (largeur * hauteur <= nbMines) return;
+	if (largeur * hauteur <= nbMines) return [];
 
 	var plantedMines = 0;
 	var xCoord = 0, yCoord = 0;
@@ -80,8 +80,8 @@ var placerMines = function (largeur, hauteur, nbMines, x, y) {
 		xCoord = Math.floor(Math.random() * largeur);
 		yCoord = Math.floor(Math.random() * hauteur);
 
-		// Don't place mine on starting space
-		if (x != xCoord && y != yCoord) {
+		// Don't place mine on starting space or already occupied
+		if (x != xCoord && y != yCoord && !matrix[yCoord][xCoord]) {
 			matrix[yCoord][xCoord] = true;
 			plantedMines++;
 		}
@@ -243,7 +243,7 @@ var testDemineur = function () {
 	nbMines = size[0] * size[1];
 	mineField = placerMines(size[0], size[1], nbMines,
 		openingCoords[0], openingCoords[1]);
-	assert(mineField === undefined);
+	assert(mineField.length == 0);
 
 	// Starting coordinate is outside of field
 	openingCoords = [size[0] + 1, size[1] + 1];
