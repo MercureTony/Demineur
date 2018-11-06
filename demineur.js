@@ -235,14 +235,6 @@ var testDemineur = function () {
 
 	// Count correct number of mines
 	assert(testCountTrue(mineField) == nbMines);
-	
-	// Test n^2-1 mines
-	size = [3, 3];
-	nbMines = size[0] * size[1] - 1;
-	openingCoords = [0, 0];
-	mineField = placerMines(size[0], size[1], nbMines,
-		openingCoords[0], openingCoords[1]);
-	assert(mineField == "false,true,true,true,true,true,true,true,true")
 
 	/* Check bad conditions */
 
