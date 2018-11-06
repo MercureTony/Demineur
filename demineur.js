@@ -75,7 +75,8 @@ var placerMines = function (largeur, hauteur, nbMines, x, y) {
 
 	var plantedMines = 0;
 	var xCoord = 0, yCoord = 0;
-	while (plantedMines != nbMines) {
+	var loop = 0; // Give maximum number of tries based on size
+	while (plantedMines != nbMines && loop < largeur * hauteur) {
 		// Create random coordinate
 		xCoord = Math.floor(Math.random() * largeur);
 		yCoord = Math.floor(Math.random() * hauteur);
@@ -84,7 +85,7 @@ var placerMines = function (largeur, hauteur, nbMines, x, y) {
 		if (x != xCoord && y != yCoord && !matrix[yCoord][xCoord]) {
 			matrix[yCoord][xCoord] = true;
 			plantedMines++;
-		}
+		} else loop++;
 	}
 	return matrix;
 };
