@@ -190,7 +190,8 @@ var demineur = function (largeur, hauteur, nbMines) {
 			killed = deadTile[0] == mx && deadTile[1] == my;
 
 			if (mineField[my][mx] && !killed) {
-				afficherImage(mx * tileSize, my * tileSize, colormap, images[9]);
+				afficherImage(mx * tileSize, my * tileSize,
+					colormap, images[9]);
 			}
 		}
 	}
