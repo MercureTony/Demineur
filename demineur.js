@@ -214,7 +214,7 @@ var testCountTrue = function (matrix) {
 	var count = 0;
 	for (var y = 0; y < matrix.length; y++) {
 		for (var x = 0; x < matrix[0].length; x++) {
-			count += matrix[y][x]
+			count += matrix[y][x];
 		}
 	}
 	return count;
