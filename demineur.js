@@ -19,15 +19,15 @@ var tileSize = 16; // Size of component square tiles
  * @param {int} image The index for the image to display
  */
 var afficherImage = function (x, y, colormap, image) {
-	
 	// Get size of bitmap
 	var hauteur = image.length;
 	var largeur = image[0].length;
 	
 	// Colourize area from specified colours in bitmap mapped to colourmap
 	for (var i = 0; i < hauteur; i++) {
-		for (var j = 0 ; j < largeur; j++) {
-			setPixel(j + x*largeur, i + y*largeur, colormap[image[i][j]]);
+		for (var j = 0; j < largeur; j++) {
+			var couleur = image[i][j];
+			setPixel(j + x, i + y, colormap[couleur]);
 		}
 	}
 };
@@ -127,7 +127,7 @@ var demineur = function (largeur, hauteur, nbMines) {
 	for (var i = 0; i < hauteur * tileSize; i += tileSize) {
 		for (var j = 0; j < largeur * tileSize; j += tileSize) {
 			// Set hidden tile - Hidden: 11
-			afficherImage(j, i, colormap, 11);
+			afficherImage(j, i, colormap, images[11]);
 		}
 	}
 	
@@ -138,7 +138,7 @@ var demineur = function (largeur, hauteur, nbMines) {
 	// Show clicked tile
 	afficherImage(
 		click.x * tileSize, click.y * tileSize,
-		colormap, checkTile(click.x, click.y, mineField)
+		colormap, images[checkTile(click.x, click.y, mineField)]
 	);
 	mineField[click.y][click.x] = null; // Clicked
 
@@ -153,7 +153,7 @@ var demineur = function (largeur, hauteur, nbMines) {
 			// Tile with mine - Lose game
 			afficherImage(
 				click.x * tileSize, click.y * tileSize,
-				colormap, 10
+				colormap, images[10]
 			);
 
 			deadTile = [click.x, click.y];
@@ -171,7 +171,7 @@ var demineur = function (largeur, hauteur, nbMines) {
 					if (!mineField[y][x] && mineField[y][x] !== null) {
 						afficherImage(
 							x * tileSize, y * tileSize,
-							colormap, checkTile(x, y, mineField)
+							colormap, images[checkTile(x, y, mineField)]
 						);
 						mineField[y][x] = null;
 						goodTiles--;
@@ -190,7 +190,7 @@ var demineur = function (largeur, hauteur, nbMines) {
 			killed = deadTile[0] == mx && deadTile[1] == my;
 
 			if (mineField[my][mx] && !killed) {
-				afficherImage(mx * tileSize, my * tileSize, colormap, 9);
+				afficherImage(mx * tileSize, my * tileSize, colormap, images[9]);
 			}
 		}
 	}
@@ -258,13 +258,13 @@ var testDemineur = function () {
 
 		// Give hexadecimal value of the screen
 		var test = exportScreen(afficherImage(
-			comparant[0], comparant[1], colormap, i
+			comparant[0], comparant[1], colormap, images[i]
 		));
 
 		// Check uniqueness to another image
 		if (x != i) {
 			assert(test != exportScreen(
-				afficherImage(0, 0, colormap, x)
+				afficherImage(0, 0, colormap, images[x])
 			));    
 		}
 	}
