@@ -242,7 +242,7 @@ var testDemineur = function () {
 	nbMines = size[0] * size[1];
 	mineField = placerMines(size[0], size[1], nbMines,
 		openingCoords[0], openingCoords[1]);
-	assert(mineField.length == 0);
+	assert(testCountTrue(mineField) == 0); // No mines
 
 	// Starting coordinate is outside of field
 	openingCoords = [size[0] + 1, size[1] + 1];
